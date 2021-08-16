@@ -23,3 +23,12 @@ void Utils::listConsciences(Conscience *cons, int numCons){
     std::cout << cons[i].name_person << " " << stoi(cons[i].conscience_person,0,2) << std::endl;
   }
 }
+
+bool Utils::isStable(Conscience *cons, int numCons){
+  for (int i =0; i<numCons-1; i++) {
+    if (cons[i].name_person > cons[i+1].name_person) return false;
+    if (cons[i].conscience_person > cons[i+1].conscience_person
+        && cons[i].name_person == cons[i+1].name_person) return false;
+  }
+  return true;
+}

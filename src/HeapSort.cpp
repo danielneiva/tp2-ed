@@ -1,5 +1,6 @@
 #include "Conscience.h"
 #include "HeapSort.h"
+#include <chrono>
 
   // To heapify a subtree rooted with node i which is
   // an index in arr[]. n is size of heap
@@ -46,4 +47,11 @@ void HeapS::heapSort(Conscience *cons, int numCons)
     // call max heapify on the reduced heap
     heapify(cons, i, 0);
   }
+}
+std::chrono::microseconds HeapS::testHeap(Conscience *cons, int numCons){
+  auto start = std::chrono::high_resolution_clock::now();
+  HeapS::heapSort (cons,numCons );
+  auto end = std::chrono::high_resolution_clock::now();
+  auto durationHeap = std::chrono::duration_cast<std::chrono::microseconds>(end - start );
+  return durationHeap;
 }

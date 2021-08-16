@@ -1,5 +1,6 @@
 #include "MergeSort.h"
 #include "Conscience.h"
+#include <chrono>
 void MergeS::merge(Conscience *cons, int const left, int const mid, int const right){
   auto const leftPortionSize = mid - left + 1;
   auto const rightPortionSize = right - mid;
@@ -49,16 +50,24 @@ void MergeS::merge(Conscience *cons, int const left, int const mid, int const ri
 }
 
 /**
-*  Begin is the first potition of the array,
-*  End is the last position of the array 
+*  Left is the first position of the array,
+*  Right is the last position of the array 
 * 
 */
-void MergeS::mergeSort(Conscience *cons, int const begin, int const end){
-  if (begin >= end)
+void MergeS::mergeSort(Conscience *cons, int const left, int const right){
+  if (left >= right)
     return;
 
-  auto mid = begin + (end - begin) / 2;
-  mergeSort(cons, begin, mid);
-  mergeSort(cons, mid + 1, end);
-  merge(cons, begin, mid, end);
+  auto mid = left + (right - left) / 2;
+  mergeSort(cons, left, mid);
+  mergeSort(cons, mid + 1, right);
+  merge(cons, left, mid, right);
+}
+
+std::chrono::microseconds MergeS::testMerge(Conscience *cons, int numCons){
+  auto start = std::chrono::high_resolution_clock::now();
+  MergeS::mergeSort (cons,0 , numCons );
+  auto end = std::chrono::high_resolution_clock::now();
+  auto durationMerge = std::chrono::duration_cast<std::chrono::microseconds>(end - start );
+  return durationMerge;
 }

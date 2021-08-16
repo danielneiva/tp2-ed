@@ -3,4 +3,5 @@
 namespace Utils {
   void loadConsciences(Conscience *cons, std::string file, int numCons);
   void listConsciences(Conscience *cons, int numCons);
+  bool isStable(Conscience *cons, int numCons);
 }

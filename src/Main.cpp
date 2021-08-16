@@ -24,41 +24,54 @@ int main(int argc, char **argv) {
   Conscience *rellocatorCO = new Conscience[numCons];
   Utils::loadConsciences(rellocatorCO, fileName, numCons);
 
+  std::chrono::microseconds radixExecTime;
+  std::chrono::microseconds quickExecTime;
+  std::chrono::microseconds mergeExecTime;
+  std::chrono::microseconds heapExecTime;
+  bool bStability;
+
    switch (testType){
-    case 2:
-      std::chrono::microseconds radix = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
-      std::chrono::microseconds quick = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
+    case 1:
+      heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
+      quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
       Utils::listConsciences(rellocatorCO, numCons);
+      bStability = Utils::isStable(rellocatorCO, numCons);
+      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
+      std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
+                << heapExecTime.count() << " microsegundos.\n - QuickSort demorou " 
+                << quickExecTime.count() << " microsegundos.\n";
+      break;
+    case 2:
+      radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
+      quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
+      Utils::listConsciences(rellocatorCO, numCons);
+      bStability = Utils::isStable(rellocatorCO, numCons);
+      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
       std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
-                << radix.count() << " microsegundos.\n - QuickSort demorou " << quick.count() 
-                << " microsegundos.\n";
+                << radixExecTime.count() << " microsegundos.\n - QuickSort demorou " 
+                << quickExecTime.count() << " microsegundos.\n";
+      break;
+    case 3:
+      heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
+      mergeExecTime = MergeS::testMerge(rellocatorCO, numCons-1);
+      Utils::listConsciences(rellocatorCO, numCons);
+      bStability = Utils::isStable(rellocatorCO, numCons);
+      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
+      std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
+                << heapExecTime.count() << " microsegundos.\n - MergeSort demorou " 
+                << mergeExecTime.count() << " microsegundos.\n";
+      break;
+    case 4:
+      radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
+      mergeExecTime = MergeS::testMerge(rellocatorCO, numCons-1);
+      Utils::listConsciences(rellocatorCO, numCons);
+      bStability = Utils::isStable(rellocatorCO, numCons);
+      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
+      std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
+                << radixExecTime.count() << " microsegundos.\n - MergeSort demorou " 
+                << mergeExecTime.count() << " microsegundos.\n";
+      break;
   } 
-
-  
-/* 
-  // QUICKSORT
-  auto start = std::chrono::high_resolution_clock::now();
-  QuickS::quickSort(rellocatorCO, 0, numCons -1 );
-  auto end = std::chrono::high_resolution_clock::now();
-*/
-/* 
-  // MERGESORT
-  auto start = std::chrono::high_resolution_clock::now();
-  MergeS::mergeSort(rellocatorCO, 0, numCons -1 );
-  auto end = std::chrono::high_resolution_clock::now();
-*/
-/* 
-  auto start = std::chrono::high_resolution_clock::now();
-  HeapS::heapSort(rellocatorCO, numCons  );
-  auto end = std::chrono::high_resolution_clock::now();
-*/  
-/*   Utils::listConsciences(rellocatorCO, numCons);
-  auto start = std::chrono::high_resolution_clock::now();
-  RadixS::radixExchangeSort(rellocatorCO, 0, numCons-1, 7, 7 );
-  auto end = std::chrono::high_resolution_clock::now();
-  auto durationMS = std::chrono::duration_cast<std::chrono::microseconds>(end - start );
-
-  std::cout << "It took: " << durationMS.count() << " Microseconds" << std::endl; */
   delete [] rellocatorCO;
   return 0;
 }
