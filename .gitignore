@@ -2,4 +2,5 @@ bin/
 .vscode
 obj/
 Teste.cpp
+Pyt.py
 *.out
