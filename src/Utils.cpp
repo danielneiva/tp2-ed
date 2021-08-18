@@ -32,3 +32,4 @@ bool Utils::isStable(Conscience *cons, int numCons){
   }
   return true;
 }
+

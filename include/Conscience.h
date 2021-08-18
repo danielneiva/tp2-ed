@@ -2,6 +2,7 @@
 #define ED_CONSCIENCE_H
 #include <string>
 
+
 struct Conscience{
   std::string name_person ="";
   std::string conscience_person ="";

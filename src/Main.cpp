@@ -30,6 +30,8 @@ int main(int argc, char **argv) {
   std::chrono::microseconds heapExecTime;
   bool bStability;
 
+  std::ofstream resultados;
+
    switch (testType){
     case 1:
       heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
@@ -40,7 +42,11 @@ int main(int argc, char **argv) {
       std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
                 << heapExecTime.count() << " microsegundos.\n - QuickSort demorou " 
                 << quickExecTime.count() << " microsegundos.\n";
+      resultados.open("resultados/resultados-1-" + std::to_string(numCons) + ".txt", std::ios::app);
+      resultados << numCons << " " << heapExecTime.count() << " " << quickExecTime.count() << std::endl;
+      resultados.close();
       break;
+
     case 2:
       radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
       quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
@@ -50,7 +56,11 @@ int main(int argc, char **argv) {
       std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
                 << radixExecTime.count() << " microsegundos.\n - QuickSort demorou " 
                 << quickExecTime.count() << " microsegundos.\n";
+      resultados.open("resultados/resultados-2-" + std::to_string(numCons) + ".txt", std::ios::app);
+      resultados << numCons << " " << radixExecTime.count() << " " << quickExecTime.count() << std::endl;
+      resultados.close();
       break;
+
     case 3:
       heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
       mergeExecTime = MergeS::testMerge(rellocatorCO, numCons-1);
@@ -60,7 +70,11 @@ int main(int argc, char **argv) {
       std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
                 << heapExecTime.count() << " microsegundos.\n - MergeSort demorou " 
                 << mergeExecTime.count() << " microsegundos.\n";
+      resultados.open("resultados/resultados-3-" + std::to_string(numCons) + ".txt", std::ios::app);
+      resultados << numCons << " " << heapExecTime.count() << " " << mergeExecTime.count() << std::endl;
+      resultados.close();
       break;
+
     case 4:
       radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
       mergeExecTime = MergeS::testMerge(rellocatorCO, numCons-1);
@@ -70,7 +84,11 @@ int main(int argc, char **argv) {
       std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
                 << radixExecTime.count() << " microsegundos.\n - MergeSort demorou " 
                 << mergeExecTime.count() << " microsegundos.\n";
+      resultados.open("resultados/resultados-4-" + std::to_string(numCons) + ".txt", std::ios::app);
+      resultados << numCons << " " << radixExecTime.count() << " " << mergeExecTime.count() << std::endl;
+      resultados.close();
       break;
+
   } 
   delete [] rellocatorCO;
   return 0;
