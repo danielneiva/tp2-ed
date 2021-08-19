@@ -24,72 +24,110 @@ int main(int argc, char **argv) {
   Conscience *rellocatorCO = new Conscience[numCons];
   Utils::loadConsciences(rellocatorCO, fileName, numCons);
 
-  std::chrono::microseconds radixExecTime;
-  std::chrono::microseconds quickExecTime;
-  std::chrono::microseconds mergeExecTime;
-  std::chrono::microseconds heapExecTime;
-  bool bStability;
 
-  std::ofstream resultados;
+  std::string env="production";
 
-   switch (testType){
-    case 1:
-      heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
-      quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
-      Utils::listConsciences(rellocatorCO, numCons);
-      bStability = Utils::isStable(rellocatorCO, numCons);
-      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
-      std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
-                << heapExecTime.count() << " microsegundos.\n - QuickSort demorou " 
-                << quickExecTime.count() << " microsegundos.\n";
-      resultados.open("resultados/resultados-1-" + std::to_string(numCons) + ".txt", std::ios::app);
-      resultados << numCons << " " << heapExecTime.count() << " " << quickExecTime.count() << std::endl;
-      resultados.close();
-      break;
+  if (env == "development"){  
+    std::chrono::microseconds radixExecTime;
+    std::chrono::microseconds quickExecTime;
+    std::chrono::microseconds mergeExecTime;
+    std::chrono::microseconds heapExecTime;
+    std::ofstream resultados;
+    int stabilityErr;
 
-    case 2:
-      radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
-      quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
-      Utils::listConsciences(rellocatorCO, numCons);
-      bStability = Utils::isStable(rellocatorCO, numCons);
-      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
-      std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
-                << radixExecTime.count() << " microsegundos.\n - QuickSort demorou " 
-                << quickExecTime.count() << " microsegundos.\n";
-      resultados.open("resultados/resultados-2-" + std::to_string(numCons) + ".txt", std::ios::app);
-      resultados << numCons << " " << radixExecTime.count() << " " << quickExecTime.count() << std::endl;
-      resultados.close();
-      break;
+    switch (testType){
+      case 1:
+        heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
+        quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
+                  << heapExecTime.count() << " microsegundos.\n - QuickSort demorou " 
+                  << quickExecTime.count() << " microsegundos.\n";
+        stabilityErr = Utils::isStable(rellocatorCO, numCons);
+        std::cout << "A combinação " 
+              << (stabilityErr == 0 ? "é estável": "não é estável. Número de erros: " + std::to_string(stabilityErr)) << std::endl;
+        resultados.open("resultados/resultados-1-" + std::to_string(numCons) + ".txt", std::ios::app);
+        resultados << heapExecTime.count() << " + " << quickExecTime.count() << " + " << std::endl;
+        resultados.close();
+        Utils::writeConsciences(rellocatorCO, numCons);
+        break;
 
-    case 3:
-      heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
-      mergeExecTime = MergeS::testMerge(rellocatorCO, numCons-1);
-      Utils::listConsciences(rellocatorCO, numCons);
-      bStability = Utils::isStable(rellocatorCO, numCons);
-      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
-      std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
-                << heapExecTime.count() << " microsegundos.\n - MergeSort demorou " 
-                << mergeExecTime.count() << " microsegundos.\n";
-      resultados.open("resultados/resultados-3-" + std::to_string(numCons) + ".txt", std::ios::app);
-      resultados << numCons << " " << heapExecTime.count() << " " << mergeExecTime.count() << std::endl;
-      resultados.close();
-      break;
+      case 2:
+        radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
+        quickExecTime = QuickS::testQuick(rellocatorCO, 0 , numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
+                  << radixExecTime.count() << " microsegundos.\n - QuickSort demorou " 
+                  << quickExecTime.count() << " microsegundos.\n";
+        stabilityErr = Utils::isStable(rellocatorCO, numCons);
+        std::cout << "A combinação " 
+              << (stabilityErr == 0 ? "é estável": "não é estável. Número de erros: " + std::to_string(stabilityErr)) << std::endl;
+        resultados.open("resultados/resultados-2-" + std::to_string(numCons) + ".txt", std::ios::app);
+        resultados << radixExecTime.count() << " + " << quickExecTime.count() << " + " << std::endl;        resultados.close();
+        Utils::writeConsciences(rellocatorCO, numCons);
+        break;
 
-    case 4:
-      radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
-      mergeExecTime = MergeS::testMerge(rellocatorCO, numCons-1);
-      Utils::listConsciences(rellocatorCO, numCons);
-      bStability = Utils::isStable(rellocatorCO, numCons);
-      std::cout << "A combinação " << (bStability ? "é ": "não é ") << "estável" << std::endl;
-      std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
-                << radixExecTime.count() << " microsegundos.\n - MergeSort demorou " 
-                << mergeExecTime.count() << " microsegundos.\n";
-      resultados.open("resultados/resultados-4-" + std::to_string(numCons) + ".txt", std::ios::app);
-      resultados << numCons << " " << radixExecTime.count() << " " << mergeExecTime.count() << std::endl;
-      resultados.close();
-      break;
+      case 3:
+        heapExecTime = HeapS::testHeap(rellocatorCO, numCons-1);
+        mergeExecTime = MergeS::testMerge(rellocatorCO,0, numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        std::cout << "Teste concluido. Os resultados são: \n - HeapSort demorou " 
+                  << heapExecTime.count() << " microsegundos.\n - MergeSort demorou " 
+                  << mergeExecTime.count() << " microsegundos.\n";
+        stabilityErr = Utils::isStable(rellocatorCO, numCons);
+        std::cout << "A combinação " 
+              << (stabilityErr == 0 ? "é estável": "não é estável. Número de erros: " + std::to_string(stabilityErr)) << std::endl;
+        resultados.open("resultados/resultados-3-" + std::to_string(numCons) + ".txt", std::ios::app);
+        resultados << heapExecTime.count() << " + " << mergeExecTime.count() << " + " << std::endl;        resultados.close();
+        Utils::writeConsciences(rellocatorCO, numCons);
+        break;
 
-  } 
+      case 4:
+        radixExecTime = RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
+        mergeExecTime = MergeS::testMerge(rellocatorCO,0, numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        std::cout << "Teste concluido. Os resultados são: \n - RadixSort demorou " 
+                  << radixExecTime.count() << " microsegundos.\n - MergeSort demorou " 
+                  << mergeExecTime.count() << " microsegundos.\n";
+        stabilityErr = Utils::isStable(rellocatorCO, numCons);
+        std::cout << "A combinação " 
+              << (stabilityErr == 0 ? "é estável": "não é estável. Número de erros: " + std::to_string(stabilityErr)) << std::endl;
+        resultados.open("resultados/resultados-4-" + std::to_string(numCons) + ".txt", std::ios::app);
+        resultados << radixExecTime.count() << " + " << mergeExecTime.count() << " + " << std::endl;        resultados.close();
+        Utils::writeConsciences(rellocatorCO, numCons);
+        break;
+
+    } 
+
+  }else if(env=="production"){
+    switch (testType){
+      case 1:
+        HeapS::heapSort(rellocatorCO, numCons-1);
+        QuickS::quickSort(rellocatorCO, 0 , numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        break;
+
+      case 2:
+        RadixS::radixExchangeSort(rellocatorCO, 0, numCons-1, 7, 7);
+        QuickS::quickSort(rellocatorCO, 0 , numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        break;
+
+      case 3:
+        HeapS::heapSort(rellocatorCO, numCons-1);
+        MergeS::mergeSort(rellocatorCO,0, numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        break;
+
+      case 4:
+        RadixS::testRadix(rellocatorCO, 0, numCons-1, 7, 7);
+        MergeS::testMerge(rellocatorCO,0, numCons-1);
+        Utils::listConsciences(rellocatorCO, numCons);
+        break;
+
+    }
+  }
+
   delete [] rellocatorCO;
   return 0;
 }

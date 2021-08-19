@@ -20,16 +20,29 @@ void Utils::loadConsciences(Conscience *cons, std::string file, int numCons){
 
 void Utils::listConsciences(Conscience *cons, int numCons){
   for (int i = 0; i<numCons; i++){
-    std::cout << cons[i].name_person << " " << stoi(cons[i].conscience_person,0,2) << std::endl;
+    std::cout << cons[i].name_person << " " << cons[i].conscience_person << std::endl;
   }
 }
 
-bool Utils::isStable(Conscience *cons, int numCons){
+int Utils::isStable(Conscience *cons, int numCons){
+  int stability = 0;
   for (int i =0; i<numCons-1; i++) {
-    if (cons[i].name_person > cons[i+1].name_person) return false;
+    if (cons[i].name_person > cons[i+1].name_person) {
+      stability++;
+    }
     if (cons[i].conscience_person > cons[i+1].conscience_person
-        && cons[i].name_person == cons[i+1].name_person) return false;
+        && cons[i].name_person == cons[i+1].name_person) {
+      stability++;
+    }
   }
-  return true;
+  return stability;
+} 
+void Utils::writeConsciences(Conscience *cons, int numCons){
+  std::ofstream consciences;
+  consciences.open("consciencias_ordenadas.txt");
+  for (int i = 0; i<numCons; i++){
+    consciences << cons[i].name_person << " " << cons[i].conscience_person << " " << stoi(cons[i].conscience_person,0,2) << std::endl;
+  }
+  consciences.close();
 }
 

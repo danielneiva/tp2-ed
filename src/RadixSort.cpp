@@ -16,7 +16,13 @@ void RadixS::radixExchangeSort(Conscience *cons, int left, int right, int bit, i
     radixExchangeSort(cons, j, right, bit-1, tam);
   }
 }
-
+/**
+ * Realiza o mergeSort e mede o tempo gasto para a operação, retornando-o
+ * 
+ * @param {Conscience cons} O array de consciencias a ser ordenado
+ * @param {int numCons} O número de consciências no array-1,
+ *        i.e. a posição da última consciência no array
+ */
 std::chrono::microseconds RadixS::testRadix(Conscience *cons, int left , int right, int bit, int tam){
   auto start = std::chrono::high_resolution_clock::now();
   RadixS::radixExchangeSort(cons, left, right, bit, tam);

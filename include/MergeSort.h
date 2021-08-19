@@ -4,8 +4,8 @@
 #include <chrono>
 
 namespace MergeS{
-  void mergeSort(Conscience *cons, int const begin, int const end);
+  void mergeSort(Conscience *cons, int const left, int const right);
   void merge(Conscience *cons, int const left, int const mid, int const right);
-  std::chrono::microseconds testMerge(Conscience *cons, int numCons);
+  std::chrono::microseconds testMerge(Conscience *cons, int left, int numCons);
 }
 #endif

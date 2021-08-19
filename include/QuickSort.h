@@ -4,7 +4,7 @@
 #include <chrono>
 
 namespace QuickS{
-  int partition ( Conscience *cons, int left, int right );
+  void partition ( Conscience *cons, int left, int right, int *i, int *j );
   void quickSort ( Conscience *cons, int left, int right );
   std::chrono::microseconds testQuick(Conscience *cons, int left , int right);
 }

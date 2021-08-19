@@ -2,39 +2,45 @@
 #include "HeapSort.h"
 #include <chrono>
 
-  // To heapify a subtree rooted with node i which is
-  // an index in arr[]. n is size of heap
-  
-void HeapS::heapify(Conscience *cons, int heapSize, int index)
+/** 
+ * Refaz uma subárvore com um nó "root" que é a raiz da subárvore,
+ * sendo este uma posição no array "cons".
+ * 
+ * @param {Conscience *cons} O array de consciencias a ser ordenado
+ * @param {int root} Raiz da subárvore
+ * @param {int heapSize} A posição do último elemento do vetor
+*/  
+void HeapS::heapify(Conscience *cons, int heapSize, int root)
 {
-  int largest = index; // Initialize largest as root
-  int left = 2 * index + 1; // left = 2*i + 1
-  int right = 2 * index + 2; // right = 2*i + 2
+  int largest = root;
+  int left = 2 * root + 1; // filho da esquerda
+  int right = 2 * root + 2; // filho da direita
 
-  // If left child is larger than root
   if (left < heapSize && cons[left].conscience_person > cons[largest].conscience_person){
     largest = left;
   }
 
-  // If right child is larger than largest so far
   if (right < heapSize && cons[right].conscience_person > cons[largest].conscience_person){
     largest = right;
   }
 
-  // If largest is not root
-  if (largest != index) {
-    Conscience::swapCons(&cons[index], &cons[largest]);
+  if (largest != root) {
+    Conscience::swapCons(&cons[root], &cons[largest]);
 
-    // Recursively heapify the affected sub-tree
     heapify(cons, heapSize, largest);
   }
 }
   
-// main function to do heap sort
-  
+/** 
+ * Constrói o Heap e realiza a ordenação
+ * 
+ * @param {Conscience *cons} O array de consciencias a ser ordenado
+ * @param {int numCons} o número de consciencias no array, i.e. o tamanho do array
+*/
+
 void HeapS::heapSort(Conscience *cons, int numCons)
 {
-  // Build heap (rearrange array)
+  // Constrói o Heap
   for (int i = numCons / 2 - 1; i >= 0; i--){
     heapify(cons, numCons, i);
   }
@@ -48,6 +54,14 @@ void HeapS::heapSort(Conscience *cons, int numCons)
     heapify(cons, i, 0);
   }
 }
+
+/**
+ * Realiza o heapSort e mede o tempo gasto para a operação, retornando-o
+ * 
+ * @param {Conscience cons} O array de consciencias a ser ordenado
+ * @param {int numCons} O número de consciências no array-1,
+ *        i.e. a posição da última consciência no array
+ */
 std::chrono::microseconds HeapS::testHeap(Conscience *cons, int numCons){
   auto start = std::chrono::high_resolution_clock::now();
   HeapS::heapSort (cons,numCons );
